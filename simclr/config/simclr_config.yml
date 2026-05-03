@@ -2,6 +2,11 @@ DATA:
   root_dir: "data/cifar-10-batches-py"
   img_size: 224
 
+MODEL:
+  HEAD:
+    dim1: 512
+    dim2: 128
+
 TRAINING:
   batch_size: 1
   n_epochs: 100
