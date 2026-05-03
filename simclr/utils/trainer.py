@@ -1,7 +1,9 @@
-from simclr.dataset.cifrar10_dataset import CIFRAR10Dataset
 from torch.utils.data import DataLoader
-from simclr.utils.misc import setup_logging, get_device
+
+from simclr.dataset.cifrar10_dataset import CIFRAR10Dataset
 from simclr.model.simclr_model import SimCLR
+from simclr.utils.misc import get_device, setup_logging
+
 
 class Trainer:
     def __init__(self, cfg):

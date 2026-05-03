@@ -1,9 +1,13 @@
-from torch.utils.data import Dataset
-from torchvision import transforms
+import os
+import pickle
+
 import numpy as np
 from PIL import Image
-import os, pickle
+from torch.utils.data import Dataset
+from torchvision import transforms
+
 from simclr.utils.misc import IDX_TO_CLASS
+
 
 class CIFRAR10Dataset(Dataset):
     def __init__(self, cfg, split="train"):
@@ -11,7 +15,9 @@ class CIFRAR10Dataset(Dataset):
         self.split = split
         self.base_path = self.cfg.DATA.root_dir
 
-        if "cifrar-10-batchs-py" not in self.base_path and os.path.exists(os.path.join(self.base_path, "cifrar-10-batches-py")):
+        if "cifrar-10-batchs-py" not in self.base_path and os.path.exists(
+            os.path.join(self.base_path, "cifrar-10-batches-py")
+        ):
             self.data_dir = os.path.join(self.base_path, "cifrar-10-batches-py")
         else:
             self.data_dir = self.base_path
@@ -35,17 +41,15 @@ class CIFRAR10Dataset(Dataset):
             [
                 transforms.Resize((self.cfg.DATA.img_size, self.cfg.DATA.img_size)),
                 transforms.ToTensor(),
-                transforms.Normalize(mean=[0.4914, 0.4822, 0.4465], std=[0.2023, 0.1994, 0.2010])
+                transforms.Normalize(mean=[0.4914, 0.4822, 0.4465], std=[0.2023, 0.1994, 0.2010]),
             ]
         )
 
-        self.train_transforms = transforms.Compose([
-
-        ])
+        self.train_transforms = transforms.Compose([])
 
     def __len__(self):
         return len(self.data)
-    
+
     def __getitem__(self, idx):
         img, label = self.data[idx], self.labels[idx]
         class_name = IDX_TO_CLASS[label]

@@ -1,4 +1,3 @@
-import torch
 import torch.nn as nn
 import torchvision.models as models
 
@@ -13,22 +12,18 @@ class ResNet18BackBone(nn.Module):
         x = self.backbone(x)
 
         return x
-    
+
+
 class ProjHead(nn.Module):
     def __init__(self):
         super().__init__()
-        pass
-        self.model = nn.Sequential(
-            nn.Linear(512, 512),
-            nn.ReLU(),
-            nn.Linear(512, 128)
-        )
-    
+        self.model = nn.Sequential(nn.Linear(512, 512), nn.ReLU(), nn.Linear(512, 128))
+
     def forward(self, x):
         x = self.model(x)
 
         return x
-    
+
 
 class SimCLR(nn.Module):
     def __init__(self):

@@ -1,11 +1,18 @@
-import logging, os, time, yaml, torch
+import logging
+import os
+import time
+
+import torch
+import yaml
 from easydict import EasyDict as edict
 from torch.utils.tensorboard import SummaryWriter
+
 
 def load_config(config_path):
     with open(config_path, "r") as f:
         config = yaml.safe_load(f)
     return edict(config)
+
 
 def setup_logging(config):
     base_dir = config.LOGGING.logging_dir
@@ -35,6 +42,7 @@ def setup_logging(config):
 
     return logger, writer, experiment_dir
 
+
 def get_device(logger):
     if torch.cuda.is_available():
         device = torch.device("cuda")
@@ -44,6 +52,7 @@ def get_device(logger):
         device = torch.device("cpu")
 
     return device
+
 
 IDX_TO_CLASS = {
     0: "airplane",
