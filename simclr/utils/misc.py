@@ -6,6 +6,7 @@ import torch
 import yaml
 from easydict import EasyDict as edict
 from torch.utils.tensorboard import SummaryWriter
+from torchvision import transforms
 
 
 def load_config(config_path):
@@ -53,6 +54,12 @@ def get_device(logger):
 
     return device
 
+def vis_image(img: torch.Tensor, squeeze=False):
+    if squeeze:
+        img = img.squeeze(0)
+        
+    img = transforms.ToPILImage()(img)
+    img.show()
 
 IDX_TO_CLASS = {
     0: "airplane",
