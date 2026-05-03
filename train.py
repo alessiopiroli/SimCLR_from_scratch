@@ -15,7 +15,7 @@ debugpy.wait_for_client()
 def main(args):
     cfg = load_config(args.cfg)
     trainer = Trainer(cfg)
-    # trainer.train()
+    trainer.train()
 
 
 if __name__ == "__main__":
