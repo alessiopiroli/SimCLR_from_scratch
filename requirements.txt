@@ -1,0 +1,7 @@
+torch
+pytest
+matplotlib
+numpy
+PyYAML
+easydict
+tensorboard
