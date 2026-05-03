@@ -26,7 +26,7 @@ class Trainer:
         self.logger.info("Built loaders")
 
     def build_model(self):
-        self.model = SimCLR()
+        self.model = SimCLR(self.cfg)
         self.model = self.model.to(self.device)
         self.logger.info("Built model")
 
@@ -40,5 +40,5 @@ class Trainer:
         total_loss = 0.0
         pbar = tqdm(self.train_loader, desc=f"Training epoch {epoch+1}")
 
-        for orig_img, train_img, label, class_name in tqdm(self.train_loader, desc=f"Train epoch {epoch+1}"):
+        for original, resized, aug1, aug2, label, class_name in tqdm(self.train_loader, desc=f"Train epoch {epoch+1}"):
             self.optimizer.zero_grad()
