@@ -37,18 +37,25 @@ class CIFRAR10Dataset(Dataset):
 
         self.data = np.vstack(self.data).reshape(-1, 3, 32, 32).transpose((0, 2, 3, 1))
 
-        self.base_transform = transforms.Compose(
+        self.original_transform = transforms.Compose(
             [
-                transforms.Resize((self.cfg.DATA.img_size, self.cfg.DATA.img_size)),
-                transforms.ToTensor(),
-                transforms.Normalize(mean=[0.4914, 0.4822, 0.4465], std=[0.2023, 0.1994, 0.2010]),
+                transforms.ToTensor()
             ]
         )
 
-        self.train_transforms = transforms.Compose([])
-
-        self.orig_transform = transforms.Compose(
+        self.resize_transform = transforms.Compose(
             [
+                transforms.Resize((self.cfg.DATA.img_size, self.cfg.DATA.img_size)),
+                transforms.ToTensor()
+            ]
+        )
+
+        self.simclr_transform = transforms.Compose(
+            [
+                transforms.RandomResizedCrop(self.cfg.DATA.img_size),
+                transforms.RandomHorizontalFlip(),
+                transforms.RandomApply([transforms.ColorJitter(0.8, 0.8, 0.8, 0.2)], p=0.8),
+                transforms.GaussianBlur(kernel_size=23),
                 transforms.ToTensor()
             ]
         )
@@ -61,13 +68,9 @@ class CIFRAR10Dataset(Dataset):
         class_name = IDX_TO_CLASS[label]
         img = Image.fromarray(img)
 
-        if self.orig_transform:
-            orig_img = self.orig_transform(img)
+        original = self.original_transform(img)
+        resized = self.resize_transform(img)
+        aug1 = self.simclr_transform(img)
+        aug2 = self.simclr_transform(img)
 
-        if self.base_transform:
-            base_img = self.base_transform(img)
-
-        if self.train_transforms:
-            train_img = self.train_transforms(base_img)
-
-        return orig_img, train_img, label, class_name
+        return original, resized, aug1, aug2, label, class_name
