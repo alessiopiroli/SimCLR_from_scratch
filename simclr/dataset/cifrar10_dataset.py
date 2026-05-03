@@ -15,10 +15,10 @@ class CIFRAR10Dataset(Dataset):
         self.split = split
         self.base_path = self.cfg.DATA.root_dir
 
-        if "cifrar-10-batchs-py" not in self.base_path and os.path.exists(
-            os.path.join(self.base_path, "cifrar-10-batches-py")
+        if "cifar-10-batchs-py" not in self.base_path and os.path.exists(
+            os.path.join(self.base_path, "cifar-10-batches-py")
         ):
-            self.data_dir = os.path.join(self.base_path, "cifrar-10-batches-py")
+            self.data_dir = os.path.join(self.base_path, "cifar-10-batches-py")
         else:
             self.data_dir = self.base_path
 
@@ -47,6 +47,12 @@ class CIFRAR10Dataset(Dataset):
 
         self.train_transforms = transforms.Compose([])
 
+        self.orig_transform = transforms.Compose(
+            [
+                transforms.ToTensor()
+            ]
+        )
+
     def __len__(self):
         return len(self.data)
 
@@ -55,10 +61,13 @@ class CIFRAR10Dataset(Dataset):
         class_name = IDX_TO_CLASS[label]
         img = Image.fromarray(img)
 
+        if self.orig_transform:
+            orig_img = self.orig_transform(img)
+
         if self.base_transform:
-            img = self.base_transform(img)
+            base_img = self.base_transform(img)
 
         if self.train_transforms:
-            img = self.train_transforms(img)
+            train_img = self.train_transforms(base_img)
 
-        return img, label, class_name
+        return orig_img, train_img, label, class_name
