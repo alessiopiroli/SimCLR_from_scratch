@@ -5,3 +5,4 @@ numpy
 PyYAML
 easydict
 tensorboard
+torchvision
