@@ -1,5 +1,6 @@
+import torch
 from torch.utils.data import DataLoader
-
+from tqdm import tqdm
 from simclr.dataset.cifrar10_dataset import CIFRAR10Dataset
 from simclr.model.simclr_model import SimCLR
 from simclr.utils.misc import get_device, setup_logging
@@ -13,9 +14,9 @@ class Trainer:
         self.n_epochs = self.cfg.TRAINING.n_epochs
         self.batch_size = int(self.cfg.TRAINING.batch_size)
         self.lr = float(self.cfg.TRAINING.lr)
-
         self.build_loaders()
         self.build_model()
+        self.optimizer = torch.optim.Adam(self.model.parameters(), lr=self.lr)
 
     def build_loaders(self):
         self.train_dataset = CIFRAR10Dataset(self.cfg, split="train")
@@ -28,3 +29,16 @@ class Trainer:
         self.model = SimCLR()
         self.model = self.model.to(self.device)
         self.logger.info("Built model")
+
+    def train(self):
+        for epoch in range(self.n_epochs):
+            train_loss = self.train_one_epoch(epoch)
+
+
+    def train_one_epoch(self, epoch):
+        self.model.train()
+        total_loss = 0.0
+        pbar = tqdm(self.train_loader, desc=f"Training epoch {epoch+1}")
+
+        for orig_img, train_img, label, class_name in tqdm(self.train_loader, desc=f"Train epoch {epoch+1}"):
+            self.optimizer.zero_grad()
