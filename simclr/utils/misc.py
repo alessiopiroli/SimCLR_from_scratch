@@ -54,12 +54,26 @@ def get_device(logger):
 
     return device
 
+
 def vis_image(img: torch.Tensor, squeeze=False):
     if squeeze:
         img = img.squeeze(0)
-        
+
     img = transforms.ToPILImage()(img)
     img.show()
+
+
+def log_epoch(logger, writer, epoch, n_epochs, train_loss, val_loss, experiment_dir, model):
+    logger.info(f"Epoch {epoch+1}/{n_epochs}, Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}")
+
+    writer.add_scalars("loss", {"train": train_loss, "validation": val_loss}, epoch + 1)
+
+    progress_dir = os.path.join(experiment_dir, "progress")
+    os.makedirs(progress_dir, exist_ok=True)
+
+    save_path = os.path.join(experiment_dir, f"model_epoch_{epoch+1}.pth")
+    torch.save(model.state_dict(), save_path)
+
 
 IDX_TO_CLASS = {
     0: "airplane",
