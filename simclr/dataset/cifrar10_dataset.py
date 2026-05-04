@@ -37,17 +37,10 @@ class CIFRAR10Dataset(Dataset):
 
         self.data = np.vstack(self.data).reshape(-1, 3, 32, 32).transpose((0, 2, 3, 1))
 
-        self.original_transform = transforms.Compose(
-            [
-                transforms.ToTensor()
-            ]
-        )
+        self.original_transform = transforms.Compose([transforms.ToTensor()])
 
         self.resize_transform = transforms.Compose(
-            [
-                transforms.Resize((self.cfg.DATA.img_size, self.cfg.DATA.img_size)),
-                transforms.ToTensor()
-            ]
+            [transforms.Resize((self.cfg.DATA.img_size, self.cfg.DATA.img_size)), transforms.ToTensor()]
         )
 
         self.simclr_transform = transforms.Compose(
@@ -55,8 +48,9 @@ class CIFRAR10Dataset(Dataset):
                 transforms.RandomResizedCrop(self.cfg.DATA.img_size),
                 transforms.RandomHorizontalFlip(),
                 transforms.RandomApply([transforms.ColorJitter(0.8, 0.8, 0.8, 0.2)], p=0.8),
+                transforms.RandomGrayscale(p=0.2),
                 transforms.GaussianBlur(kernel_size=23),
-                transforms.ToTensor()
+                transforms.ToTensor(),
             ]
         )
 
