@@ -5,7 +5,9 @@ import torchvision.models as models
 class ResNet18BackBone(nn.Module):
     def __init__(self):
         super().__init__()
-        self.backbone = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
+        self.backbone = models.resnet18(weights=None)
+        self.backbone.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias=False)
+        self.backbone.maxpool = nn.Identity()
         self.backbone.fc = nn.Identity()
 
     def forward(self, x):

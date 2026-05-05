@@ -66,7 +66,7 @@ def vis_image(img: torch.Tensor, squeeze=False):
 def log_epoch(logger, writer, epoch, n_epochs, train_loss, val_loss, experiment_dir, model):
     logger.info(f"Epoch {epoch+1}/{n_epochs}, Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}")
 
-    writer.add_scalars("loss", {"train": train_loss, "validation": val_loss}, epoch + 1)
+    writer.add_scalars("epoch_loss", {"train": train_loss, "epoch_validation": val_loss}, epoch + 1)
 
     progress_dir = os.path.join(experiment_dir, "progress")
     os.makedirs(progress_dir, exist_ok=True)

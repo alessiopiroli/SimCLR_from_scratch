@@ -14,8 +14,11 @@ class CIFRAR10Dataset(Dataset):
         self.cfg = cfg
         self.split = split
         self.base_path = self.cfg.DATA.root_dir
+        self.img_size = self.cfg.DATA.img_size
+        self.img_resize = self.cfg.DATA.img_resize
+        self.blur_ker = int(self.cfg.DATA.blur_ker)
 
-        if "cifar-10-batchs-py" not in self.base_path and os.path.exists(
+        if "cifar-10-batechs-py" not in self.base_path and os.path.exists(
             os.path.join(self.base_path, "cifar-10-batches-py")
         ):
             self.data_dir = os.path.join(self.base_path, "cifar-10-batches-py")
@@ -40,7 +43,7 @@ class CIFRAR10Dataset(Dataset):
         self.original_transform = transforms.Compose([transforms.ToTensor()])
 
         self.resize_transform = transforms.Compose(
-            [transforms.Resize((self.cfg.DATA.img_size, self.cfg.DATA.img_size)), transforms.ToTensor()]
+            [transforms.Resize((self.cfg.DATA.img_resize, self.cfg.DATA.img_resize)), transforms.ToTensor()]
         )
 
         self.simclr_transform = transforms.Compose(
@@ -49,7 +52,7 @@ class CIFRAR10Dataset(Dataset):
                 transforms.RandomHorizontalFlip(),
                 transforms.RandomApply([transforms.ColorJitter(0.8, 0.8, 0.8, 0.2)], p=0.8),
                 transforms.RandomGrayscale(p=0.2),
-                transforms.GaussianBlur(kernel_size=23),
+                transforms.GaussianBlur(kernel_size=self.blur_ker),
                 transforms.ToTensor(),
             ]
         )
@@ -62,8 +65,13 @@ class CIFRAR10Dataset(Dataset):
         class_name = IDX_TO_CLASS[label]
         img = Image.fromarray(img)
 
+        # transform into 32x32 tensor
         original = self.original_transform(img)
+        
+        # transform into a 224x224 tensor
         resized = self.resize_transform(img)
+        
+        # 32x32 transformations
         aug1 = self.simclr_transform(img)
         aug2 = self.simclr_transform(img)
 
