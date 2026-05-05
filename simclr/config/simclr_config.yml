@@ -1,6 +1,6 @@
 DATA:
   root_dir: "data/cifar-10-batches-py"
-  img_size: 224
+  img_size: 32
 
 MODEL:
   HEAD:
@@ -8,8 +8,9 @@ MODEL:
     dim2: 128
 
 TRAINING:
-  batch_size: 64
+  batch_size: 1024
   n_epochs: 100
+  lr: 1e-3
 
 LOSS:
   temperature: 0.5

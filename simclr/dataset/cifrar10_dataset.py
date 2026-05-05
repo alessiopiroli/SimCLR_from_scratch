@@ -49,7 +49,7 @@ class CIFRAR10Dataset(Dataset):
                 transforms.RandomHorizontalFlip(),
                 transforms.RandomApply([transforms.ColorJitter(0.8, 0.8, 0.8, 0.2)], p=0.8),
                 transforms.RandomGrayscale(p=0.2),
-                transforms.GaussianBlur(kernel_size=23),
+                transforms.GaussianBlur(kernel_size=3),
                 transforms.ToTensor(),
             ]
         )
@@ -62,9 +62,7 @@ class CIFRAR10Dataset(Dataset):
         class_name = IDX_TO_CLASS[label]
         img = Image.fromarray(img)
 
-        original = self.original_transform(img)
-        resized = self.resize_transform(img)
         aug1 = self.simclr_transform(img)
         aug2 = self.simclr_transform(img)
 
-        return original, resized, aug1, aug2, label, class_name
+        return aug1, aug2, label, class_name
