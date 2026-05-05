@@ -3,7 +3,6 @@ import argparse
 from simclr.utils.misc import load_config
 from simclr.utils.trainer import Trainer
 
-
 def main(args):
     cfg = load_config(args.cfg)
     trainer = Trainer(cfg)
