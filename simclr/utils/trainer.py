@@ -16,6 +16,7 @@ class Trainer:
         self.n_epochs = self.cfg.TRAINING.n_epochs
         self.batch_size = int(self.cfg.TRAINING.batch_size)
         self.lr = float(self.cfg.TRAINING.lr)
+        self.n_workers = self.cfg.TRAINING.n_workers
         self.build_loaders()
         self.build_model()
         self.optimizer = torch.optim.AdamW(self.model.parameters(), lr=self.lr, weight_decay=1e-6)
@@ -27,8 +28,8 @@ class Trainer:
     def build_loaders(self):
         self.train_dataset = CIFRAR10Dataset(self.cfg, split="train")
         self.val_dataset = CIFRAR10Dataset(self.cfg, split="test")
-        self.train_loader = DataLoader(self.train_dataset, batch_size=self.batch_size, shuffle=True)
-        self.val_loader = DataLoader(self.val_dataset, batch_size=self.batch_size, shuffle=False)
+        self.train_loader = DataLoader(self.train_dataset, batch_size=self.batch_size, shuffle=True, drop_last=True, num_workers=self.n_workers)
+        self.val_loader = DataLoader(self.val_dataset, batch_size=self.batch_size, shuffle=False, drop_last=True, num_workers=self.n_workers)
         self.logger.info("Built loaders")
 
     def build_model(self):
