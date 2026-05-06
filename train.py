@@ -1,15 +1,7 @@
 import argparse
 
-######################################
-import debugpy
-
 from simclr.utils.misc import load_config
 from simclr.utils.trainer import Trainer
-
-debugpy.listen(("localhost", 6001))
-print("Waiting for debugger attach...")
-debugpy.wait_for_client()
-######################################
 
 
 def main(args):
