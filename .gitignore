@@ -174,3 +174,11 @@ simclr/loss/__init__.py
 simclr/model/__init__.py
 simclr/test/__init__.py
 simclr/utils/__init__.py
+simclr_branch.md
+simclr_no_pretraining.md
+.gitignore
+make_video.py
+.gitignore
+visualize.py
+simclr_branch.md
+simclr_branch.md
