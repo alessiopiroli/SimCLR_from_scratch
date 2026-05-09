@@ -22,7 +22,9 @@ class ProjHead(nn.Module):
         self.cfg = cfg
         self.dim1 = int(self.cfg.MODEL.HEAD.dim1)
         self.dim2 = int(self.cfg.MODEL.HEAD.dim2)
-        self.model = nn.Sequential(nn.Linear(self.dim1, self.dim1), nn.ReLU(), nn.Linear(self.dim1, self.dim2))
+        self.model = nn.Sequential(
+            nn.Linear(self.dim1, self.dim1), nn.BatchNorm1d(self.dim1), nn.ReLU(), nn.Linear(self.dim1, self.dim2)
+        )
 
     def forward(self, x):
         x = self.model(x)
