@@ -1,6 +1,5 @@
 from torch.utils.data import Dataset
 from torchvision import datasets, transforms
-from PIL import Image
 
 
 class MNISTDataset(Dataset):
@@ -12,23 +11,18 @@ class MNISTDataset(Dataset):
         self.img_resize = self.cfg.DATA.img_resize
         self.blur_ker = int(self.cfg.DATA.blur_ker)
 
-        self.dataset = datasets.MNIST(
-            root=self.base_path,
-            train=("train" == self.split),
-            download=True
+        self.dataset = datasets.MNIST(root=self.base_path, train=("train" == self.split), download=True)
+
+        self.original_transform = transforms.Compose([transforms.Resize((32, 32)), transforms.ToTensor()])
+
+        self.simclr_transform = transforms.Compose(
+            [
+                transforms.Resize((32, 32)),
+                transforms.RandomResizedCrop(self.img_size),
+                transforms.RandomHorizontalFlip(),
+                transforms.ToTensor(),
+            ]
         )
-
-        self.original_transform = transforms.Compose([
-            transforms.Resize((32, 32)),
-            transforms.ToTensor()
-        ])
-
-        self.simclr_transform = transforms.Compose([
-            transforms.Resize((32, 32)),
-            transforms.RandomResizedCrop(self.img_size),
-            transforms.RandomHorizontalFlip(),
-            transforms.ToTensor(),
-        ])
 
     def __len__(self):
         return len(self.dataset)
