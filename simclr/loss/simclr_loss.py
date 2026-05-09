@@ -20,11 +20,11 @@ class SimCLRLoss(nn.Module):
 
         mask = torch.eye(2 * B, device=sim_mat.device, dtype=torch.bool)
         sim_mat = sim_mat.masked_fill(mask, float("-inf"))
-        
+
         pos_idx = torch.arange(2 * B, device=sim_mat.device)
         pos_idx = (pos_idx + B) % (2 * B)
         positives = sim_mat[torch.arange(2 * B), pos_idx]
-        
+
         denom = torch.logsumexp(sim_mat, dim=1)
         loss = (-positives + denom).mean()
 
