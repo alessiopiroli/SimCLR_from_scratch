@@ -1,5 +1,5 @@
 DATA:
-  root_dir: "data/cifar-10-batches-py"
+  root_dir: "data"
   img_size: 32
   img_resize: 224
   blur_ker: 3
