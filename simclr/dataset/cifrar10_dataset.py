@@ -67,10 +67,10 @@ class CIFRAR10Dataset(Dataset):
 
         # transform into 32x32 tensor
         original = self.original_transform(img)
-        
+
         # transform into a 224x224 tensor
         resized = self.resize_transform(img)
-        
+
         # 32x32 transformations
         aug1 = self.simclr_transform(img)
         aug2 = self.simclr_transform(img)
