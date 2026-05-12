@@ -37,7 +37,7 @@ class Trainer:
         self.logger.info("Built loaders")
 
     def build_model(self):
-        self.model = SimCLR(self.cfg)
+        self.model = SimCLR()
         self.model = self.model.to(self.device)
         self.logger.info("Built model")
 
