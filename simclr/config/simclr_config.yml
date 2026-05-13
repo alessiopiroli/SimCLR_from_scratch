@@ -4,13 +4,8 @@ DATA:
   img_resize: 224
   blur_ker: 3
 
-MODEL:
-  HEAD:
-    dim1: 512
-    dim2: 128
-
 TRAINING:
-  batch_size: 512
+  batch_size: 1024
   n_epochs: 100
   lr: 3e-4
   n_workers: 0
