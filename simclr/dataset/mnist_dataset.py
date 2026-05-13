@@ -17,10 +17,12 @@ class MNISTDataset(Dataset):
 
         self.simclr_transform = transforms.Compose(
             [
-                transforms.Resize((32, 32)),
-                transforms.RandomResizedCrop(self.img_size),
-                transforms.RandomHorizontalFlip(),
-                transforms.ToTensor(),
+                transforms.Resize((self.img_size, self.img_size)),
+                transforms.RandomResizedCrop(self.img_size, scale=(0.2, 1.0)),
+                transforms.RandomRotation(degrees=10),
+                transforms.RandomAffine(degrees=0, translate=(0.1, 0.1), shear=10),
+                transforms.GaussianBlur(kernel_size=self.blur_ker),
+                transforms.ToTensor()
             ]
         )
 
@@ -29,13 +31,10 @@ class MNISTDataset(Dataset):
 
     def __getitem__(self, idx):
         img, label = self.dataset[idx]
-
         img = img.convert("RGB")
-
         class_name = str(label)
 
         original = self.original_transform(img)
-
         aug1 = self.simclr_transform(img)
         aug2 = self.simclr_transform(img)
 
