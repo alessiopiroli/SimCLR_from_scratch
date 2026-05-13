@@ -1,7 +1,5 @@
 # --- project related stuff ---
 data/
-artifacts/logs
-artifacts/media
 *tmp.png
 
 # Byte-compiled / optimized / DLL files
@@ -183,3 +181,4 @@ visualize.py
 make_video.py
 simclr_branch.md
 simclr_branch.md
+logging
