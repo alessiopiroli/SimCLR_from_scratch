@@ -71,8 +71,8 @@ def log_epoch(logger, writer, epoch, n_epochs, train_loss, val_loss, experiment_
     progress_dir = os.path.join(experiment_dir, "progress")
     os.makedirs(progress_dir, exist_ok=True)
 
-    save_path = os.path.join(experiment_dir, f"model_epoch_{epoch+1}.pth")
-    torch.save(model.state_dict(), save_path)
+    # save_path = os.path.join(experiment_dir, f"model_epoch_{epoch+1}.pth")
+    # torch.save(model.state_dict(), save_path)
 
 
 IDX_TO_CLASS = {
