@@ -4,7 +4,7 @@ from tqdm import tqdm
 
 from simclr.dataset.mnist_dataset import MNISTDataset
 from simclr.loss.simclr_loss import SimCLRLoss
-from simclr.model.simclr_model import SimCLR
+from simclr.model.simclr_model import SimCLRModel
 from simclr.utils.misc import get_device, log_epoch, setup_logging
 
 
@@ -37,7 +37,7 @@ class Trainer:
         self.logger.info("Built loaders")
 
     def build_model(self):
-        self.model = SimCLR()
+        self.model = SimCLRModel()
         self.model = self.model.to(self.device)
         self.logger.info("Built model")
 
