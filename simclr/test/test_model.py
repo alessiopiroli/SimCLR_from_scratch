@@ -1,19 +1,22 @@
 import pytest
 import torch
 
-from simclr.model.simclr_model import SimCLR
+from simclr.model.simclr_model import SimCLRModel
 from simclr.utils.misc import load_config
 
 
-@pytest.fixture
-def cfg():
-    return load_config("simclr/config/simclr_config.yml")
+@pytest.mark.parametrize("bs, n_ch, h, w", [(1, 3, 32, 32)])
+def test_model_encoder(bs, n_ch, h, w):
+    x = torch.randn([bs, n_ch, h, w])
+    model = SimCLRModel().eval()
+    out = model(x, encoder_out=True)
 
+    assert out.shape == (bs, 256)
 
 @pytest.mark.parametrize("bs, n_ch, h, w", [(1, 3, 32, 32)])
-def test_model(cfg, bs, n_ch, h, w):
+def test_model_complete(bs, n_ch, h, w):
     x = torch.randn([bs, n_ch, h, w])
-    model = SimCLR(cfg)
+    model = SimCLRModel().eval()
     out = model(x)
 
-    assert out.shape == (bs, cfg.MODEL.HEAD.dim2)
+    assert out.shape == (bs, 128)
