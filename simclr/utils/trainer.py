@@ -1,4 +1,4 @@
-import torch
+import torch, os
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
@@ -68,6 +68,10 @@ class Trainer:
             pbar.set_postfix(loss=f"{train_loss.item():.4f}")
             self.training_steps += 1
             self.writer.add_scalar("training_loss", train_loss, self.training_steps)
+
+            if self.training_steps % 50 == 0:
+                save_path = os.path.join(self.experiment_dir, f"model_step_{self.training_steps}.pth")
+                torch.save(self.model.state_dict(), save_path)
 
         self.scheduler.step()
 
