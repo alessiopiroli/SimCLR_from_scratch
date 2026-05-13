@@ -19,7 +19,7 @@ class Trainer:
         self.n_workers = self.cfg.TRAINING.n_workers
         self.build_loaders()
         self.build_model()
-        self.optimizer = torch.optim.AdamW(self.model.parameters(), lr=self.lr, weight_decay=1e-6)
+        self.optimizer = torch.optim.AdamW(self.model.parameters(), lr=self.lr, weight_decay=1e-4)
         self.scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(self.optimizer, T_max=self.n_epochs, eta_min=0)
         self.loss_fn = SimCLRLoss(self.cfg)
         self.training_steps = 0
