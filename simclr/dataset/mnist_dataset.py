@@ -8,7 +8,6 @@ class MNISTDataset(Dataset):
         self.split = split
         self.base_path = self.cfg.DATA.root_dir
         self.img_size = self.cfg.DATA.img_size
-        self.img_resize = self.cfg.DATA.img_resize
         self.blur_ker = int(self.cfg.DATA.blur_ker)
 
         self.dataset = datasets.MNIST(root=self.base_path, train=("train" == self.split), download=True)
@@ -17,9 +16,11 @@ class MNISTDataset(Dataset):
 
         self.simclr_transform = transforms.Compose(
             [
-                transforms.Resize((32, 32)),
-                transforms.RandomResizedCrop(self.img_size),
-                transforms.RandomHorizontalFlip(),
+                transforms.Resize((self.img_size, self.img_size)),
+                transforms.RandomResizedCrop(self.img_size, scale=(0.2, 1.0)),
+                transforms.RandomRotation(degrees=10),
+                transforms.RandomAffine(degrees=0, translate=(0.1, 0.1), shear=10),
+                transforms.GaussianBlur(kernel_size=self.blur_ker),
                 transforms.ToTensor(),
             ]
         )
