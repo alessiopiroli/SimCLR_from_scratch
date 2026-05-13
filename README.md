@@ -22,3 +22,8 @@ python train.py simclr/config/simclr_config.yml
 
 ### Results
 > UMAP visualization after ~1500 steps showing class-wise clustering of the learned embeddings
+
+
+
+https://github.com/user-attachments/assets/6f005bbc-a869-4952-b730-96bd4ec9796a
+
