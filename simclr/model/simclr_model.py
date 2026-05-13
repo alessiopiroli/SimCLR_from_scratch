@@ -40,8 +40,11 @@ class SimCLR(nn.Module):
         self.backbone = ResNet18BackBone()
         self.head = ProjHead(self.cfg)
 
-    def forward(self, x):
+    def forward(self, x, enc_out=False):
         backbone_out = self.backbone(x)
+        if enc_out:
+            return backbone_out
+
         head_out = self.head(backbone_out)
 
         return head_out
